@@ -1,0 +1,47 @@
+A simple 12 hour time input component. 
+
+After sending half a day searching for a time input component 
+I created on that solves my simple needs.  Please send me feed 
+back and share your improvements.  If it saves someone some work 
+I'm happy.
+
+USAGE:
+
+1) Copy /src/com/raupach/components into your src folder
+2) Add 'xmlns:raupach="com.raupach.components.*"'
+3) add <raupach:TimeInput> MXML 
+	or To bind to a Date variable: <raupach:TimeInput time="{myDateHere}">
+	or To uses change event: <raupach:TimeInput time="{myDateHere}" change="my_changeHandler(event)">
+
+See Main.mxml example 
+
+FEATURES
+- 12 or 24 hour input
+- blocks invalid hour and minute entry
+- click AM/PM switch
+
+
+
+MIT LICENSE - http://www.opensource.org/licenses/mit-license.html
+Copyright (c) 2011 Paul Raupach
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+	<fx:Metadata>
+		[Event (name="change", type="flash.events.Event")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import spark.events.TextOperationEvent;
+			
+			private var _time:Date = new Date(1970,1,1,0,0);
+			
+			private var stashedHour:String;
+			private var stashedMinute:String;
+			
+			
+			private function sendEvents():void {
+				dispatchEvent(new Event("DateUpdated"));
+				dispatchEvent(new Event("change"));
+			}
+			
+			[Bindable (event="DateUpdated")]
+			public function get time():Date {
+				return _time;
+			}
+
+			public function set time(value:Date):void {
+				_time = value;
+				dispatchEvent(new Event("DateUpdated"));
+			}
+			
+			[Bindable (event="DateUpdated")]
+			public function get hour():String {
+				var h:Number;
+				if (time.hours == 0) {
+					h = 12;
+				} else if (time.hours > 12) {
+					h = time.hours - 12;
+				} else {
+					h = time.hours;
+				}
+				return h.toString();
+			}
+
+			public function set hour(value:String):void {
+				var h:Number = Number(value);
+				if ((isNaN(h)) || (h > 23)) {
+					h = time.hours;
+				} 
+				
+				if (h == 0) {
+					time.setHours(0);
+				} else if (h < 12) {
+					if (isPM == true) {
+						time.setHours(h + 12);
+					} else {
+						time.setHours(h);
+					}
+				} else if (h == 12) {
+					if (isPM == true) {
+						time.setHours(12);
+					} else {
+						time.setHours(0);
+					}
+					
+				} else if (h > 12) {
+					time.setHours(h);
+				}
+				sendEvents();
+				
+			}
+			[Bindable (event="DateUpdated")]
+			public function get minute():String {
+				if (time.minutes < 10) {
+					return "0" + time.minutes.toString();
+				} else {
+					return time.minutes.toString();
+				}
+			}
+
+			public function set minute(value:String):void {
+				var m:Number = Number(value);
+				
+				if ((isNaN(m)) || m > 59) {
+					m = time.minutes;
+				}
+				time.setMinutes(m);
+				sendEvents();
+			}
+			
+			[Bindable (event="DateUpdated")]
+			public function get isPM():Boolean {
+				if (time.hours > 11) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+			public function set isPM(value:Boolean):void {
+				var h:Number = time.hours % 12;
+				if (value == true) { //PM
+					if (h == 12) {
+						time.hours = 12;
+					} else {
+						time.hours = (h + 12);
+					}
+				} else { //AM
+					if (h == 12) {
+						time.hours = 0;
+					} else {
+						time.hours = h;		
+					}
+				}
+				sendEvents();
+			}
+
+
+
+			protected function hourInput_changeHandler(event:TextOperationEvent):void {
+				if (Number(hourInput.text) > 23) {
+					hourInput.text = stashedHour;
+				}
+			}
+
+
+			protected function hourInput_changingHandler(event:TextOperationEvent):void {
+				stashedHour = event.target.text;
+			}
+
+
+			protected function minuteInput_changeHandler(event:TextOperationEvent):void {
+				
+				if (Number(minuteInput.text) > 59) {
+					minuteInput.text = stashedMinute;
+				}
+			}
+
+
+			protected function minuteInput_changingHandler(event:TextOperationEvent):void {
+				stashedMinute = minuteInput.text;
+			}
+
+		]]>
+	</fx:Script>
+	<s:Group x="0" y="0">
+		<s:Rect height="20" width="64" x="0.5" y="0.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#000000" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Rect>
+		<s:TextInput id="hourInput" skinClass="com.raupach.components.HourInput" text="{hour}" 
+					 x="5" y="5" restrict="0-9" maxChars="2" 
+					 focusOut="{hour=hourInput.text}" 
+					 changing="hourInput_changingHandler(event)" 
+					 change="hourInput_changeHandler(event)"/>
+		<s:RichText color="#000000" fontFamily="Arial" fontSize="12" height="15" tabStops="S0" text=":" width="10" x="21" y="6"/>
+		<s:TextInput id="minuteInput" skinClass="com.raupach.components.MinuteInput" text="{minute}" 
+					 x="25" y="5"  restrict="0-9" maxChars="2"
+					 focusOut="{minute=minuteInput.text}" 
+					 change="minuteInput_changeHandler(event)"
+					 changing="minuteInput_changingHandler(event)"
+					 />
+		<s:CheckBox id="AMPMDesignator" skinClass="com.raupach.components.AMPMDesignator" selected="{isPM}" change="{isPM=AMPMDesignator.selected}" x="40" y="7"/>
+		
+		
+		
+	</s:Group>
+</s:Group>

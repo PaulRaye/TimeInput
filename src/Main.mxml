@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:d="http://ns.adobe.com/fxg/2008/dt" 
+			   xmlns:fc="http://ns.adobe.com/flashcatalyst/2009" 
+			   backgroundColor="#FFFFFF" height="600" 
+			   preloaderChromeColor="#FFFFFF" width="800" 
+			   xmlns:raupach="com.raupach.components.*">
+
+	<fx:Script>
+		<![CDATA[
+			import spark.events.TextOperationEvent;
+			[Bindable]
+			private var time:Date = new Date();
+			
+			
+			protected function time_input1_changeHandler(event:Event):void {
+				changeEventDisplay.text = event.target.time.toTimeString();
+			}
+
+		]]>
+	</fx:Script>
+	<s:Label x="40" y="20" text="Time Input" width="75"/>
+	<raupach:TimeInput id="time_input1" x="150" y="14" change="time_input1_changeHandler(event)" time="{time}"/>
+		
+	<s:Label x="40" y="40" text="Binding"/>
+	<s:Label text="{time_input1.time.toTimeString()}" x="150" y="40" width="150"/>
+	
+	<s:Label x="40" y="60" text="Change Event"/>
+	<s:Label id="changeEventDisplay" x="150" y="60" text="" width="115"/>
+</s:Application>
