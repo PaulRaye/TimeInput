@@ -8,10 +8,10 @@ I'm happy.
 USAGE:
 
 1) Copy /src/com/raupach/components into your src folder
-2) Add 'xmlns:raupach="com.raupach.components.*"'
-3) add <raupach:TimeInput> MXML 
-	or To bind to a Date variable: <raupach:TimeInput time="{myDateHere}">
-	or To uses change event: <raupach:TimeInput time="{myDateHere}" change="my_changeHandler(event)">
+2) Add 'xmlns:raupach="com.raupach.components.*"' to your Application tag
+3) add <raupach:TimeInput> to your MXML 
+	or to bind to a Date variable: <raupach:TimeInput time="{myDateHere}">
+	or to use change event: <raupach:TimeInput time="{myDateHere}" change="my_changeHandler(event)">
 
 See Main.mxml example 
 
