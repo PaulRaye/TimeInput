@@ -45,7 +45,9 @@
 			
 			public function set hour(value:String):void {
 				var h:Number = Number(value);
-				if ((isNaN(h)) || (h > 23)) {
+				var stash:Number = _time.hours;
+				
+				if ( (isNaN(h)) || (h > 23) ) {
 					h = _time.hours;
 				} 
 				
@@ -67,7 +69,11 @@
 				} else if (h > 12) {
 					_time.setHours(h);
 				}
-				sendEvents();
+				if (stash == _time.hours) {
+					dispatchEvent(new Event("DateUpdated"));
+				} else {
+					sendEvents();
+				}
 				
 			}
 			[Bindable (event="DateUpdated")]
@@ -81,12 +87,16 @@
 			
 			public function set minute(value:String):void {
 				var m:Number = Number(value);
+				var stash:Number = _time.minutes;
 				
 				if ((isNaN(m)) || m > 59) {
 					m = _time.minutes;
 				}
 				_time.setMinutes(m);
-				sendEvents();
+				
+				if (stash != _time.minutes) {
+					sendEvents();
+				}
 			}
 			
 			[Bindable (event="DateUpdated")]
