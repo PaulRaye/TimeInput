@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:fx="http://ns.adobe.com/mxml/2009">
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
 	<fx:Metadata>
 		[Event (name="change", type="flash.events.Event")]
 	</fx:Metadata>
@@ -10,127 +11,79 @@
 			
 			import spark.events.TextOperationEvent;
 			
-			private var _time:Date = new Date(1970,1,1,0,0);
+			private var _duration:Object = {hours:0, minutes:0};
 			
 			private var stashedHour:String;
 			private var stashedMinute:String;
 			
 			
 			private function sendEvents():void {
-				dispatchEvent(new Event("DateUpdated"));
+				dispatchEvent(new Event("DurationUpdated"));
 				dispatchEvent(new Event("change"));
 			}
 			
-			[Bindable (event="DateUpdated")]
-			public function get time():Date {
-				return(_time);
+			[Bindable (event="DurationUpdated")]
+			public function get duration():Number {
+				var mins:Number = (_duration.hours * 60) + _duration.minutes
+				return(mins);
 			}
 			
-			public function set time(value:Date):void {
-				_time = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds(), value.getMilliseconds());
-				dispatchEvent(new Event("DateUpdated"));
+			public function set duration(value:Number):void {
+				_duration = {hours:0, minutes:0};
+				_duration.hours = int(value / 60);
+				_duration.minutes = value % 60;
+				dispatchEvent(new Event("DurationUpdated"));
 			}
 			
-			[Bindable (event="DateUpdated")]
+			[Bindable (event="DurationUpdated")]
 			public function get hour():String {
-				var h:Number;
-				if (_time.hours == 0) {
-					h = 12;
-				} else if (_time.hours > 12) {
-					h = _time.hours - 12;
-				} else {
-					h = _time.hours;
-				}
-				return h.toString();
+				return _duration.hours.toString();
 			}
 			
 			public function set hour(value:String):void {
 				var h:Number = Number(value);
-				var stash:Number = _time.hours;
+				var stash:Number = _duration.hours;
 				
-				if ( (isNaN(h)) || (h > 23) ) {
-					h = _time.hours;
+				if (isNaN(h)) {
+					h = _duration.hours;
+				} else {
+					_duration.hours = h;
 				} 
-				
-				if (h == 0) {
-					_time.setHours(0);
-				} else if (h < 12) {
-					if (isPM == true) {
-						_time.setHours(h + 12);
-					} else {
-						_time.setHours(h);
-					}
-				} else if (h == 12) {
-					if (isPM == true) {
-						_time.setHours(12);
-					} else {
-						_time.setHours(0);
-					}
-					
-				} else if (h > 12) {
-					_time.setHours(h);
-				}
-				if (stash == _time.hours) {
-					dispatchEvent(new Event("DateUpdated"));
+				 
+				if (stash == _duration.hours) {
+					dispatchEvent(new Event("DurationUpdated"));
 				} else {
 					sendEvents();
 				}
 				
 			}
-			[Bindable (event="DateUpdated")]
+			[Bindable (event="DurationUpdated")]
 			public function get minute():String {
-				if (time.minutes < 10) {
-					return "0" + _time.minutes.toString();
+				if (_duration.minutes < 10) {
+					return "0" + _duration.minutes.toString();
 				} else {
-					return _time.minutes.toString();
+					return _duration.minutes.toString();
 				}
 			}
 			
 			public function set minute(value:String):void {
 				var m:Number = Number(value);
-				var stash:Number = _time.minutes;
+				var stash:Number = _duration.minutes;
 				
 				if ((isNaN(m)) || m > 59) {
-					m = _time.minutes;
+					m = _duration.minutes;
+				} else {
+					_duration.minutes = m;
 				}
-				_time.setMinutes(m);
 				
-				if (stash != _time.minutes) {
+				if (stash != _duration.minutes) {
 					sendEvents();
 				}
 			}
 			
-			[Bindable (event="DateUpdated")]
-			public function get isPM():Boolean {
-				if (_time.hours > 11) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-			
-			public function set isPM(value:Boolean):void {
-				var h:Number = _time.hours % 12;
-				if (value == true) { //PM
-					if (h == 12) {
-						_time.hours = 12;
-					} else {
-						_time.hours = (h + 12);
-					}
-				} else { //AM
-					if (h == 12) {
-						_time.hours = 0;
-					} else {
-						_time.hours = h;		
-					}
-				}
-				sendEvents();
-			}
-			
-			
 			
 			protected function hourInput_changeHandler(event:TextOperationEvent):void {
-				if (Number(hourInput.text) > 23) {
+				if (Number(hourInput.text) > 99) {
 					hourInput.text = stashedHour;
 				}
 			}
@@ -156,7 +109,7 @@
 		]]>
 	</fx:Script>
 	<s:Group x="0" y="0">
-		<s:Rect height="20" width="64" x="0.5" y="0.5">
+		<s:Rect height="20" width="45" x="0.5" y="0.5">
 			<s:stroke>
 				<s:SolidColorStroke caps="none" color="#000000" joints="miter" miterLimit="4" weight="1"/>
 			</s:stroke>
@@ -176,9 +129,5 @@
 					 change="minuteInput_changeHandler(event)"
 					 changing="minuteInput_changingHandler(event)"
 					 />
-		<s:CheckBox id="AMPMDesignator" skinClass="com.raupach.components.AMPMDesignator" selected="{isPM}" change="{isPM=AMPMDesignator.selected}" x="40" y="7"/>
-		
-		
-		
 	</s:Group>
 </s:Group>

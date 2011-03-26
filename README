@@ -1,4 +1,4 @@
-A simple 12 hour time input component. 
+Simple 12 hour time input and duration input components. 
 
 After sending half a day searching for a time input component 
 I created on that solves my simple needs.  Please send me feed 
@@ -7,12 +7,19 @@ I'm happy.
 
 USAGE:
 
+For Time Input
 1) Copy /src/com/raupach/components into your src folder
 2) Add 'xmlns:raupach="com.raupach.components.*"' to your Application tag
-3) add <raupach:TimeInput> to your MXML 
-	or to bind to a Date variable: <raupach:TimeInput time="{myDateHere}">
-	or to use change event: <raupach:TimeInput time="{myDateHere}" change="my_changeHandler(event)">
+3) Add <raupach:TimeInput /> to your MXML 
+	or to bind to a Date variable: <raupach:TimeInput time="{myDateHere}" />
+	or to use change event: <raupach:TimeInput time="{myDateHere}" change="my_changeHandler(event)" />
 
+For Duration Input
+1) Copy /src/com/raupach/components into your src folder
+2) Add 'xmlns:raupach="com.raupach.components.*"' to your Application tag
+3) Add <raupach:DurationInput /> to your MXML
+   or to bind to a Number variable: <raupach:DurationInput duration="{myDurationInMinutesHere}" />
+   or to use change event: <raupach:DurationInput duration="{myDurationInMinutesHere}" change="my_changeHandler(event)" />
 See Main.mxml example 
 
 FEATURES

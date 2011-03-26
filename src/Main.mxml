@@ -6,26 +6,48 @@
 			   backgroundColor="#FFFFFF" height="600" 
 			   preloaderChromeColor="#FFFFFF" width="800" 
 			   xmlns:raupach="com.raupach.components.*">
-
+	
 	<fx:Script>
 		<![CDATA[
 			import spark.events.TextOperationEvent;
 			[Bindable]
 			private var time:Date = new Date();
 			
+			[Bindable]
+			private var duration:Number = 90;
 			
 			protected function time_input1_changeHandler(event:Event):void {
 				changeEventDisplay.text = event.target.time.toTimeString();
 			}
+			
+			
+			
+
+			protected function duration_input_changeHandler(event:Event):void
+			{
+				changeDurationEventDisplay.text = event.target.duration.toString();
+			}
 
 		]]>
 	</fx:Script>
-	<s:Label x="40" y="20" text="Time Input" width="75"/>
-	<raupach:TimeInput id="time_input1" x="150" y="14" change="time_input1_changeHandler(event)" time="{time}"/>
-		
-	<s:Label x="40" y="40" text="Binding"/>
-	<s:Label text="{time_input1.time.toTimeString()}" x="150" y="40" width="150"/>
 	
-	<s:Label x="40" y="60" text="Change Event"/>
-	<s:Label id="changeEventDisplay" x="150" y="60" text="" width="115"/>
+	<s:Group>
+		<s:Label x="40" y="20" text="Time Input" width="75"/>
+		<raupach:TimeInput id="time_input1" x="150" y="14" change="time_input1_changeHandler(event)" time="{time}"/>
+		
+		<s:Label x="40" y="40" text="Binding"/>
+		<s:Label text="{time_input1.time.toTimeString()}" x="150" y="40" width="150"/>
+		
+		<s:Label x="40" y="60" text="Change Event"/>
+		<s:Label id="changeEventDisplay" x="150" y="60" text="" width="115"/>
+	</s:Group>
+	<s:Group x="32" y="161" width="343" height="94">
+		<s:Label x="10" y="14" text="Duration Input"/>
+		<raupach:DurationInput id="duration_input" x="94" y="10" duration="{duration}" change="duration_input_changeHandler(event)" />
+		<s:Label x="10" y="38" text="Binding"/>
+		<s:Label x="94" y="38" text="{duration_input.duration.toString()}"/>
+		<s:Label x="10" y="58" text="Change Event"/>
+		<s:Label x="94" y="58" id="changeDurationEventDisplay" text=""/>
+	</s:Group>
+	
 </s:Application>
